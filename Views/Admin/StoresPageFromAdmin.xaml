@@ -1,0 +1,68 @@
+﻿<Page x:Class="WpfApp6.Views.Admin.StoresPageFromAdmin"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:local="clr-namespace:WpfApp6.Views.Admin"
+      xmlns:fw="clr-namespace:SourceChord.FluentWPF;assembly=FluentWPF"
+      mc:Ignorable="d"
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="StoresPageFromAdmin">
+
+    <ScrollViewer Margin="10" fw:PointerTracker.Enabled="True" Background="#01FFFFFF">
+        <Grid fw:PointerTracker.Enabled="True" Background="#01FFFFFF">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="3*" />
+                <ColumnDefinition Width="2*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="258*" />
+                <RowDefinition Height="115*" />
+            </Grid.RowDefinitions>
+
+            <!-- Header -->
+            <TextBlock Text="Store Management" FontSize="28" FontWeight="Bold" Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}" HorizontalAlignment="Left" Margin="202,0,0,20" Width="252" />
+
+            <!-- DataGrid to display stores -->
+            <fw:AcrylicPanel Grid.Column="0" Margin="0,57,10,0" Background="Transparent" BorderBrush="{DynamicResource SystemControlForegroundBaseMediumLowBrush}" BorderThickness="1" Grid.RowSpan="2">
+                <DataGrid x:Name="StoresDataGrid" AutoGenerateColumns="False" CanUserAddRows="False" Margin="10" SelectionChanged="StoresDataGrid_SelectionChanged" Background="Transparent" GridLinesVisibility="None">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="ID" Binding="{Binding ID}" Width="Auto" />
+                        <DataGridTextColumn Header="Store Name" Binding="{Binding StoreName}" Width="*" />
+                        <DataGridTextColumn Header="Location" Binding="{Binding Location}" Width="*" />
+                        <DataGridTextColumn Header="Store Keeper" Binding="{Binding StoreKeeper}" Width="*" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </fw:AcrylicPanel>
+
+            <!-- Form to add new stores -->
+            <fw:AcrylicPanel Grid.Column="1" Background="Transparent" BorderBrush="{DynamicResource SystemControlForegroundBaseMediumLowBrush}" BorderThickness="1" Margin="0,57,0,0" Grid.RowSpan="2">
+                <StackPanel Margin="10">
+                    <TextBlock Text="Add New Store" FontSize="20" FontWeight="Bold" Margin="0,0,0,10" />
+                    <TextBlock Text="Store Name:" Margin="0,5" />
+                    <TextBox x:Name="StoreNameTextBox" Width="200" Margin="0,0,0,10" />
+                    <TextBlock Text="Location:" Margin="0,5" />
+                    <TextBox x:Name="LocationTextBox" Width="200" Margin="0,0,0,10" />
+                    <TextBlock Text="Store Keeper:" Margin="0,5" />
+                    <TextBox x:Name="StoreKeeperTextBox" Width="200" Margin="0,0,0,10" />
+                    <Button Content="Add Store" Width="200" Margin="0,10" Click="AddStoreButton_Click" />
+                </StackPanel>
+            </fw:AcrylicPanel>
+
+            <!-- Details Panel -->
+            <fw:AcrylicPanel Grid.Row="2" Grid.ColumnSpan="2" Background="Transparent" BorderBrush="{DynamicResource SystemControlForegroundBaseMediumLowBrush}" BorderThickness="1" Margin="0,20,0,0">
+                <StackPanel Orientation="Vertical" Margin="10">
+                    <TextBlock Text="Store Details" FontSize="20" FontWeight="Bold" Margin="0,0,0,10" />
+                    <TextBlock Text="Store Name:" Margin="0,5" />
+                    <TextBox x:Name="DetailStoreNameTextBox" Width="200"  Margin="0,0,0,10" />
+                    <TextBlock Text="Location:" Margin="0,5" />
+                    <TextBox x:Name="DetailLocationTextBox" Width="200" Margin="0,0,0,10" />
+                    <TextBlock Text="Store Keeper:" Margin="0,5" />
+                    <TextBox x:Name="DetailStoreKeeperTextBox" Width="200" Margin="0,0,0,10" />
+                    <Button Content="Update Store" Width="200" Margin="0,10" Click="UpdateStoreButton_Click" />
+                </StackPanel>
+            </fw:AcrylicPanel>
+        </Grid>
+    </ScrollViewer>
+</Page>

@@ -1,0 +1,61 @@
+﻿<Page x:Class="WpfApp6.Views.Admin.ProjectPageFromAdmin"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:fw="clr-namespace:SourceChord.FluentWPF;assembly=FluentWPF"
+      xmlns:local="clr-namespace:WpfApp6.Views.Admin"
+      mc:Ignorable="d"
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="ProjectPageFromAdmin">
+
+    <Grid Margin="10" fw:PointerTracker.Enabled="True" Background="#01FFFFFF">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="3*" />
+            <ColumnDefinition Width="2*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <TextBlock Grid.ColumnSpan="2" Text="Project Management" FontSize="24" HorizontalAlignment="Center" Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"  Margin="0,0,0,20" />
+
+        <!-- DataGrid to display projects -->
+        <fw:AcrylicPanel Grid.Row="1" Grid.Column="0" Margin="0,0,10,0" BorderBrush="{DynamicResource SystemControlForegroundBaseMediumLowBrush}" TintColor="WhiteSmoke" TintOpacity="0.5">
+            <DataGrid x:Name="ProjectsDataGrid" AutoGenerateColumns="False" CanUserAddRows="False" Margin="10" SelectionChanged="ProjectsDataGrid_SelectionChanged">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="ID" Binding="{Binding ID}" Width="Auto" />
+                    <DataGridTextColumn Header="Project Name" Binding="{Binding ProjectName}" Width="*" />
+                    <DataGridTextColumn Header="Blasting Engineer" Binding="{Binding BlastingEngineer}" Width="*" />
+                </DataGrid.Columns>
+            </DataGrid>
+        </fw:AcrylicPanel>
+
+        <!-- Form to add new projects -->
+        <fw:AcrylicPanel Grid.Row="1" Grid.Column="1" BorderBrush="{DynamicResource SystemControlForegroundBaseMediumLowBrush}" TintColor="WhiteSmoke" TintOpacity="0.5" Grid.RowSpan="2" RenderTransformOrigin="0.494,0.587">
+            <StackPanel Margin="30,10,30,82">
+                <TextBlock Text="Add New Project" FontSize="18" Margin="0,0,0,10" />
+                <TextBlock Text="Project Name:" Margin="0,5" />
+                <TextBox x:Name="ProjectNameTextBox" Width="200" />
+                <TextBlock Text="Blasting Engineer:" Margin="0,5" />
+                <TextBox x:Name="BlastingEngineerTextBox" Width="200" />
+                <Button Content="Add Project" Width="200" Margin="0,10" Click="AddProjectButton_Click" />
+            </StackPanel>
+        </fw:AcrylicPanel>
+
+        <!-- Details Panel -->
+        <fw:AcrylicPanel Grid.Row="2" Grid.ColumnSpan="1" BorderBrush="{DynamicResource SystemControlForegroundBaseMediumLowBrush}"  TintOpacity="0.5" Margin="0,20,10,0">
+            <StackPanel Orientation="Vertical" Margin="10">
+                <TextBlock Text="Project Details" FontSize="18" Margin="0,0,0,10" />
+                <TextBlock Text="Project Name:" Margin="0,5" />
+                <TextBox x:Name="DetailProjectNameTextBox" Width="200" />
+                <TextBlock Text="Blasting Engineer:" Margin="0,5" />
+                <TextBox x:Name="DetailBlastingEngineerTextBox" Width="200" />
+                <Button Content="Update Project" Width="200" Margin="0,10" Click="UpdateProjectButton_Click" />
+            </StackPanel>
+        </fw:AcrylicPanel>
+    </Grid>
+</Page>

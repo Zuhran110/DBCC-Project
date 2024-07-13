@@ -1,0 +1,27 @@
+﻿<fw:AcrylicWindow x:Class="WpfApp6.Views.General_Manager.GeneralManagerWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfApp6.Views.General_Manager"
+        xmlns:fw="clr-namespace:SourceChord.FluentWPF;assembly=FluentWPF"
+        mc:Ignorable="d"
+        Title="GeneralManagerWindow" Height="450" Width="800">
+    <Grid   fw:PointerTracker.Enabled="True" Background="#01FFFFFF">
+        <DockPanel>
+
+            <!-- Navigation Menu -->
+            <StackPanel DockPanel.Dock="Left" Width="180" Background="{DynamicResource SystemControlBackgroundBaseLowBrush}">
+
+                <MenuItem Header="Dashboard" Style="{StaticResource AcrylicMenuItemStyle}" Click="Dashboard_Btn_Click"  Margin="5" />
+                <MenuItem Header="Employees" Style="{StaticResource AcrylicMenuItemStyle}" Click="Employees_Btn_Click" Margin="5" />
+                <MenuItem Header="Stores" Style="{StaticResource AcrylicMenuItemStyle}" Click="Stores_Btn_Click" Margin="5" />
+                <MenuItem Header="Projects" Style="{StaticResource AcrylicMenuItemStyle}" Click="Projects_Btn_Click" Margin="5" />
+                <MenuItem Header="Reports" Style="{StaticResource AcrylicMenuItemStyle}" Click="Report_Btn_Click" Margin="5" />
+            </StackPanel>
+
+            <!-- Main Content Area -->
+            <Frame x:Name="MainFrameFromGM" NavigationUIVisibility="Hidden" />
+        </DockPanel>
+    </Grid>
+</fw:AcrylicWindow>
