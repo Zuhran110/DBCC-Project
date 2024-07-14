@@ -1,15 +1,28 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
+using System.Windows.Shapes;
+using WpfApp6.Views.General_Manager;
 
-namespace WpfApp6.Views.General_Manager;
+namespace WpfApp6.Views.Store_Keeper;
 
 /// <summary>
-/// Interaction logic for ReportFromGM.xaml
+/// Interaction logic for RequestFromSK.xaml
 /// </summary>
-public partial class ReportFromGM : Page, INotifyPropertyChanged
+public partial class RequestFromSK : Page, INotifyPropertyChanged
 {
     public ObservableCollection<Report> Reports
     {
@@ -23,7 +36,7 @@ public partial class ReportFromGM : Page, INotifyPropertyChanged
 
     public event PropertyChangedEventHandler PropertyChanged;
 
-    public ReportFromGM()
+    public RequestFromSK()
     {
         InitializeComponent();
         DataContext = this;
@@ -32,7 +45,7 @@ public partial class ReportFromGM : Page, INotifyPropertyChanged
         _allReports = new ObservableCollection<Report>
             {
                 new Report { BlastLocation = "Mountain A", Date = new DateTime(2024, 1, 1), ExplosiveType = "Dynamite", Status = "Completed",RequestStatus="Approved", BlastingEngineer = "Engineer A", TotalANFO = 500, TotalHoles = 10, TotalEmulsion = 300 },
-                new Report { BlastLocation = "Mountain B", Date = new DateTime(2024, 3, 1), ExplosiveType = "ANFO", Status = "Scheduled",RequestStatus="Declined", BlastingEngineer = "Engineer B", TotalANFO = 700, TotalHoles = 15, TotalEmulsion = 400 }
+                new Report { BlastLocation = "Mountain d", Date = new DateTime(2024, 3, 1), ExplosiveType = "ANFO", Status = "Scheduled",RequestStatus="Declined", BlastingEngineer = "Engineer B", TotalANFO = 700, TotalHoles = 15, TotalEmulsion = 400 }
             };
 
         Reports = new ObservableCollection<Report>(_allReports);
@@ -117,62 +130,13 @@ public partial class ReportFromGM : Page, INotifyPropertyChanged
     {
         if (ReportsDataGrid.SelectedItem is Report selectedReport)
         {
-            var detailPage = new DetailReportFromGM(selectedReport);
-            NavigationService.Navigate(detailPage);
+            var detailPagefromSK = new DetailReportFromSK(selectedReport);
+            NavigationService.Navigate(detailPagefromSK);
         }
     }
 
     private void ReportsDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         // Handle selection changed event if needed
-    }
-}
-
-public class Report
-{
-    public string BlastLocation
-    {
-        get; set;
-    }
-
-    public DateTime Date
-    {
-        get; set;
-    }
-
-    public string ExplosiveType
-    {
-        get; set;
-    }
-
-    public string Status
-    {
-        get; set;
-    }
-
-    public string BlastingEngineer
-    {
-        get; set;
-    }
-
-    public string RequestStatus
-    {
-        get;
-        set;
-    }
-
-    public double TotalANFO
-    {
-        get; set;
-    }
-
-    public int TotalHoles
-    {
-        get; set;
-    }
-
-    public double TotalEmulsion
-    {
-        get; set;
     }
 }
