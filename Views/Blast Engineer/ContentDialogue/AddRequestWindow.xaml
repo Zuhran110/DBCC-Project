@@ -1,0 +1,19 @@
+﻿<Window x:Class="WpfApp6.Views.Blast_Engineer.ContentDialogue.AddRequestWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:fw="clr-namespace:SourceChord.FluentWPF;assembly=FluentWPF"
+        mc:Ignorable="d"
+        Title="AddRequestWindow" Height="200" Width="300">
+    <Grid fw:PointerTracker.Enabled="True" Background="#01FFFFFF">
+        <StackPanel Margin="10">
+            <TextBlock Text="Enter Number of Holes:" Margin="0, 0, 0, 10" VerticalAlignment="Center" HorizontalAlignment="Center" />
+            <TextBox x:Name="NumberOfHolesTextBox" Width="200" VerticalAlignment="Center" HorizontalAlignment="Center" />
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0, 20, 0, 0">
+                <Button Content="Submit" Width="75" Margin="10,0,10,10" Click="Submit_Click" />
+                <Button Content="Cancel" Width="75" Margin="10,0,10,10" Click="Cancel_Click" />
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Window>
