@@ -32,8 +32,8 @@ public partial class RequestFromSK : Page, INotifyPropertyChanged
         // Initialize sample data
         _allReports = new ObservableCollection<Report>
             {
-                new Report { BlastLocation = "Mountain A", Date = new DateTime(2024, 1, 1), ExplosiveType = "Dynamite", Status = "Completed",RequestStatus="Approved", BlastingEngineer = "Engineer A", TotalANFO = 500, TotalHoles = 10, TotalEmulsion = 300 },
-                new Report { BlastLocation = "Mountain d", Date = new DateTime(2024, 3, 1), ExplosiveType = "ANFO", Status = "Scheduled",RequestStatus="Declined", BlastingEngineer = "Engineer B", TotalANFO = 700, TotalHoles = 15, TotalEmulsion = 400 }
+                new Report { BlastLocation = "Mountain A", Date = new DateTime(2024, 1, 1), ExplosiveType = "Dynamite", Status = "Completed",RequestStatus="Pending", BlastingEngineer = "Engineer A", TotalANFO = 500, TotalHoles = 10, TotalEmulsion = 300 },
+                new Report { BlastLocation = "Mountain d", Date = new DateTime(2024, 3, 1), ExplosiveType = "ANFO", Status = "Scheduled",RequestStatus="Pending", BlastingEngineer = "Engineer B", TotalANFO = 700, TotalHoles = 15, TotalEmulsion = 400 }
             };
 
         Reports = new ObservableCollection<Report>(_allReports);

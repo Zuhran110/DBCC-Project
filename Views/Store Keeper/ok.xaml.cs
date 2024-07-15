@@ -45,10 +45,22 @@ namespace WpfApp6.Views.Store_Keeper
 
         private void Approve_Btn(object sender, RoutedEventArgs e)
         {
+            if (SelectedReport != null)
+            {
+                SelectedReport.RequestStatus = "Accepted";
+                // Update the data source if needed and navigate back
+                NavigationService.GoBack();
+            }
         }
 
         private void Decline_Btn(object sender, RoutedEventArgs e)
         {
+            if (SelectedReport != null)
+            {
+                SelectedReport.RequestStatus = "Declined";
+                // Update the data source if needed and navigate back
+                NavigationService.GoBack();
+            }
         }
     }
 }

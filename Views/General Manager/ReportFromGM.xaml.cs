@@ -128,8 +128,10 @@ public partial class ReportFromGM : Page, INotifyPropertyChanged
     }
 }
 
-public class Report
+public class Report : INotifyPropertyChanged
 {
+    private string _requestStatus;
+
     public string BlastLocation
     {
         get; set;
@@ -155,13 +157,7 @@ public class Report
         get; set;
     }
 
-    public string RequestStatus
-    {
-        get;
-        set;
-    }
-
-    public double TotalANFO
+    public int TotalANFO
     {
         get; set;
     }
@@ -171,8 +167,28 @@ public class Report
         get; set;
     }
 
-    public double TotalEmulsion
+    public int TotalEmulsion
     {
         get; set;
+    }
+
+    public string RequestStatus
+    {
+        get => _requestStatus;
+        set
+        {
+            if (_requestStatus != value)
+            {
+                _requestStatus = value;
+                OnPropertyChanged();
+            }
+        }
+    }
+
+    public event PropertyChangedEventHandler PropertyChanged;
+
+    protected void OnPropertyChanged([CallerMemberName] string name = null)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
     }
 }

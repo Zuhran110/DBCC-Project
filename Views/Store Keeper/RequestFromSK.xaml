@@ -18,7 +18,7 @@
 
         <!-- Header Section -->
         <StackPanel Grid.Row="0" Orientation="Vertical" Margin="10" VerticalAlignment="Top">
-            <TextBlock Text="General Manager Report Dashboard" FontSize="24" FontWeight="Bold" Foreground="White" />
+            <TextBlock Text="Store Keeper Report Dashboard" FontSize="24" FontWeight="Bold" Foreground="White" />
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                 <TextBlock Text="Logged in as: " Foreground="White" />
                 <TextBlock Text="John Doe" FontWeight="Bold" Foreground="White" />
