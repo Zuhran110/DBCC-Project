@@ -4,15 +4,20 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:fw="clr-namespace:SourceChord.FluentWPF;assembly=FluentWPF"
+        WindowStartupLocation="CenterScreen"
         mc:Ignorable="d"
-        Title="AddRequestWindow" Height="200" Width="300">
+        Title="AddRequestWindow" Height="300" Width="300">
     <Grid fw:PointerTracker.Enabled="True" Background="#01FFFFFF">
         <StackPanel Margin="10">
-            <TextBlock Text="Enter Number of Holes:" Margin="0, 0, 0, 10" VerticalAlignment="Center" HorizontalAlignment="Center" />
-            <TextBox x:Name="NumberOfHolesTextBox" Width="200" VerticalAlignment="Center" HorizontalAlignment="Center" />
+            <TextBlock Text="Enter Number of Holes:" Margin="0, 10, 0, 10" VerticalAlignment="Center" HorizontalAlignment="Center" />
+            <TextBox x:Name="NumberOfHolesTextBox" Width="150" VerticalAlignment="Center" HorizontalAlignment="Center" />
+            <TextBlock Text="Enter Number of Rows:" Margin="0, 10, 0, 10" VerticalAlignment="Center" HorizontalAlignment="Center" />
+            <TextBox x:Name="NumberOfRowsTextBox" Width="150" VerticalAlignment="Center" HorizontalAlignment="Center" />
+            <TextBlock Text="Enter Number of Columns:" Margin="0, 10, 0, 10" VerticalAlignment="Center" HorizontalAlignment="Center" />
+            <TextBox x:Name="NumberOfColumnsTextBox" Width="150" VerticalAlignment="Center" HorizontalAlignment="Center" />
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0, 20, 0, 0">
-                <Button Content="Submit" Width="75" Margin="10,0,10,10" Click="Submit_Click" />
-                <Button Content="Cancel" Width="75" Margin="10,0,10,10" Click="Cancel_Click" />
+                <Button Content="Submit" Width="75" Margin="5,0,5,5" Click="Submit_Click" />
+                <Button Content="Cancel" Width="75" Margin="5,0,5,5" Click="Cancel_Click" />
             </StackPanel>
         </StackPanel>
     </Grid>

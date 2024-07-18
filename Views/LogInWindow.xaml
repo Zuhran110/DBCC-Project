@@ -5,7 +5,8 @@
                   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                   xmlns:fw="clr-namespace:SourceChord.FluentWPF;assembly=FluentWPF"
                   mc:Ignorable="d"
-                  Title="LogInWindow" Height="450" Width="800">
+                  Title="LogInWindow" Height="450" Width="800"
+                  WindowStartupLocation="CenterScreen">
     <Grid fw:PointerTracker.Enabled="True" Background="#01FFFFFF" Margin="3">
         <fw:AcrylicPanel TintColor="#CC000000" TintOpacity="0.5" fw:PointerTracker.Enabled="True" Background="#01FFFFFF" Margin="3">
             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">

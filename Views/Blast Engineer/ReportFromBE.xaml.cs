@@ -4,6 +4,7 @@ using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Navigation;
+using WpfApp6.Views.Blast_Engineer.ContentDialogue;
 using WpfApp6.Views.General_Manager;
 
 namespace WpfApp6.Views.Blast_Engineer;
@@ -131,5 +132,27 @@ public partial class ReportFromBE : Page
 
     private void AddRequest_Click(object sender, RoutedEventArgs e)
     {
+        AddRequestWindow addRequestWindow = new AddRequestWindow();
+        bool? result = addRequestWindow.ShowDialog(); // Ensure ShowDialog is used
+
+        if (result == true)
+        {
+            int numberOfRows = addRequestWindow.NumberOfRows;
+            int numberOfColumns = addRequestWindow.NumberOfColumns;
+            EnterDepthsWindow enterDepthsWindow = new EnterDepthsWindow(numberOfRows, numberOfColumns);
+            bool? depthsResult = enterDepthsWindow.ShowDialog();
+
+            if (depthsResult == true)
+            {
+                var depths = enterDepthsWindow.DepthEntries.SelectMany(de => de.Depths).ToArray();
+                // Handle the depths data here
+                MessageBox.Show($"Entered Depths: {string.Join(", ", depths)}", "Depths Submitted", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+        }
+        else
+        {
+            // Handle the cancellation here
+            MessageBox.Show("Request Cancelled", "Cancelled", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
     }
 }
