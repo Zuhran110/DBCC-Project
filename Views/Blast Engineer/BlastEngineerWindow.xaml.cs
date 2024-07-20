@@ -6,7 +6,7 @@ namespace WpfApp6.Views.Blast_Engineer;
 /// <summary>
 /// Interaction logic for BlastEngineerWindow.xaml
 /// </summary>
-public partial class BlastEngineerWindow : AcrylicWindow
+public partial class BlastEngineerWindow : Window
 {
     public BlastEngineerWindow()
     {
