@@ -7,10 +7,10 @@
                   mc:Ignorable="d"
                   Title="LogInWindow" Height="450" Width="800"
                   WindowStartupLocation="CenterScreen">
-    <Grid fw:PointerTracker.Enabled="True" Background="#01FFFFFF" Margin="3">
-        <fw:AcrylicPanel TintColor="#CC000000" TintOpacity="0.5" fw:PointerTracker.Enabled="True" Background="#01FFFFFF" Margin="3">
+    <Grid fw:PointerTracker.Enabled="True" Background="White" Margin="3">
+        <fw:AcrylicPanel TintColor="white" TintOpacity="0.5" fw:PointerTracker.Enabled="True" Background="White" Margin="3">
             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                <TextBlock Text="Login" FontSize="24" Foreground="White" Margin="0,0,0,20" />
+                <TextBlock Text="Login" FontSize="24" Foreground="Black" Margin="0,0,0,20" />
                 <TextBox x:Name="UsernameTextBox" Width="200" Margin="0,0,0,10" Text="Username" Style="{StaticResource TextBoxRevealStyle}" />
 
                 <Grid Width="200" Margin="0,0,0,20">
@@ -18,9 +18,9 @@
                     <PasswordBox x:Name="PasswordBox" Width="200" Margin="0,0,0,0" Style="{StaticResource PasswordBoxRevealStyle}" />
                 </Grid>
 
-                <CheckBox x:Name="ShowPasswordCheckBox" Content="Show Password" Foreground="White" Margin="0,0,0,10" Checked="ShowPasswordCheckBox_Checked" Unchecked="ShowPasswordCheckBox_Unchecked" />
+                <CheckBox x:Name="ShowPasswordCheckBox" Content="Show Password" Foreground="Black" Margin="0,0,0,10" Checked="ShowPasswordCheckBox_Checked" Unchecked="ShowPasswordCheckBox_Unchecked" />
 
-                <Button HorizontalAlignment="Left" Margin="5" Height="32" Style="{StaticResource ButtonRevealStyle}" Content="Login" Width="200" Click="LogIn_Btn_Click" />
+                <Button HorizontalAlignment="Left" Margin="5" Height="32" Style="{StaticResource ButtonRevealStyle}" Content="Login" Width="200" Click="LogIn_Btn_Click" Background="White" Foreground="black" BorderBrush="Black" BorderThickness="2" />
             </StackPanel>
         </fw:AcrylicPanel>
     </Grid>

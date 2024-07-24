@@ -8,7 +8,7 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="ReportFromGM">
 
-    <Grid Margin="10" fw:PointerTracker.Enabled="True" Background="#01FFFFFF">
+    <Grid Margin="10" fw:PointerTracker.Enabled="True" Background="White">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
@@ -27,12 +27,14 @@
         </StackPanel>
 
         <!-- Filter Section -->
-        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="10">
-            <DatePicker x:Name="StartDatePicker" Width="200" Margin="0,0,10,0" SelectedDateChanged="ReportDatePicker_SelectedDateChanged" VerticalAlignment="Top" />
-            <DatePicker x:Name="EndDatePicker" Width="200" Margin="0,0,10,0" SelectedDateChanged="ReportDatePicker_SelectedDateChanged" VerticalAlignment="Top" />
-            <TextBox Width="200" Margin="10,0,0,0" TextChanged="SearchBox_TextChanged" VerticalAlignment="Top" />
-            <Button Content="Search" Width="100" Margin="10,0,0,0" HorizontalAlignment="Stretch" VerticalAlignment="Top" Click="SearchButton_Click" />
-        </StackPanel>
+        <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Auto" Margin="10">
+            <StackPanel Grid.Row="1" Orientation="Horizontal">
+                <DatePicker x:Name="StartDatePicker" MinWidth="150" MaxWidth="200" Margin="0,0,10,0" SelectedDateChanged="ReportDatePicker_SelectedDateChanged" VerticalAlignment="Top" />
+                <DatePicker x:Name="EndDatePicker" MinWidth="150" MaxWidth="200"  Margin="0,0,10,0" SelectedDateChanged="ReportDatePicker_SelectedDateChanged" VerticalAlignment="Top" />
+                <TextBox MinWidth="150" MaxWidth="200" Margin="10,0,0,0" TextChanged="SearchBox_TextChanged" VerticalAlignment="Top" />
+                <Button Content="Search" MinWidth="100" MaxWidth="150"  Margin="10,0,0,0" HorizontalAlignment="Stretch" VerticalAlignment="Top" Click="SearchButton_Click" />
+            </StackPanel>
+        </ScrollViewer>
 
         <!-- Reports Section -->
         <DataGrid x:Name="ReportsDataGrid" Grid.Row="2" AutoGenerateColumns="False" Margin="10,0">

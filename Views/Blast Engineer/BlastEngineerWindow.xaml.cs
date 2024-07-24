@@ -1,5 +1,4 @@
 ﻿using System.Windows;
-using SourceChord.FluentWPF;
 
 namespace WpfApp6.Views.Blast_Engineer;
 

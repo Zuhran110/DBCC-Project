@@ -137,10 +137,9 @@ public partial class ReportFromBE : Page
 
         if (result == true)
         {
-            int numberOfRows = addRequestWindow.NumberOfRows;
             int numberOfColumns = addRequestWindow.NumberOfColumns;
             int totalHoles = addRequestWindow.NumberOfHoles;
-            EnterDepthsWindow enterDepthsWindow = new EnterDepthsWindow(numberOfRows, numberOfColumns, totalHoles);
+            EnterDepthsWindow enterDepthsWindow = new EnterDepthsWindow(totalHoles, numberOfColumns);
             bool? depthsResult = enterDepthsWindow.ShowDialog();
 
             if (depthsResult == true)

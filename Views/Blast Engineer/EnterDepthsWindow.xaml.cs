@@ -1,29 +1,128 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.Linq;
+﻿using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using SourceChord.FluentWPF;
 
 namespace WpfApp6.Views.Blast_Engineer
 {
+    public class DepthEntry : System.ComponentModel.INotifyPropertyChanged
+    {
+        public DepthEntry(int numberOfColumns)
+        {
+            Depths = new ObservableCollection<double>(new double[numberOfColumns]);
+            Depths.CollectionChanged += Depths_CollectionChanged;
+        }
+
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+
+        public ObservableCollection<double> Depths
+        {
+            get; private set;
+        }
+
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+        }
+
+        private void Depths_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            OnPropertyChanged(nameof(Depths));
+        }
+    }
+
     public partial class EnterDepthsWindow : Window
     {
+        private int _numberOfColumns;
+
+        private int _numberOfRows;
+
+        private int _totalHoles;
+
+        public EnterDepthsWindow(int numberOfHoles, int numberOfColumns)
+        {
+            InitializeComponent();
+            _totalHoles = numberOfHoles;
+            _numberOfColumns = numberOfColumns;
+            _numberOfRows = (int)Math.Ceiling((double)numberOfHoles / numberOfColumns);
+            TotalHolesTextBlock.Text = $"Total Holes: {_totalHoles}";
+            CreateDepthGrid(_numberOfRows, _numberOfColumns);
+            UpdateAverageDepth();
+        }
+
         public ObservableCollection<DepthEntry> DepthEntries
         {
             get; private set;
         }
 
-        private int _totalHoles;
-
-        public EnterDepthsWindow(int numberOfRows, int numberOfColumns, int totalHoles)
+        private double CalculateAnfoCoveringSpace(double anfoPerMeter, double remainingSpace)
         {
-            InitializeComponent();
-            _totalHoles = totalHoles;
-            TotalHolesTextBlock.Text = $"Total Holes: {_totalHoles}";
-            CreateDepthGrid(numberOfRows, numberOfColumns);
-            UpdateAverageDepth();
+            double result = anfoPerMeter * remainingSpace;
+            MessageBox.Show($"CalculateAnfoCoveringSpace: AnfoPerMeter={anfoPerMeter}, RemainingSpace={remainingSpace}, Result={result}");
+            return result;
+        }
+
+        private double CalculateAnfoPerMeter(double diameter, double density)
+        {
+            double result = (22.0 / 7000.0) * Math.Pow((diameter / 2.0), 2) * density;
+            MessageBox.Show($"CalculateAnfoPerMeter: Diameter={diameter}, Density={density}, Result={result}");
+            return result;
+        }
+
+        private double CalculateAverageDepth()
+        {
+            double totalDepth = CalculateTotalDepth();
+            int totalCount = CalculateTotalCount();
+            return totalCount > 0 ? totalDepth / totalCount : 0.0;
+        }
+
+        private double CalculateEmulsionCoveringSpace(double emulsionPerHole, double emulsionPerMeter)
+        {
+            double result = emulsionPerHole / emulsionPerMeter;
+            MessageBox.Show($"CalculateEmulsionCoveringSpace: EmulsionPerHole={emulsionPerHole}, EmulsionPerMeter={emulsionPerMeter}, Result={result}");
+            return result;
+        }
+
+        private double CalculateEmulsionPerMeter(double diameter, double density)
+        {
+            double result = (22.0 / 7000.0) * Math.Pow(diameter / 2.0, 2) * density;
+            MessageBox.Show($"CalculateEmulsionPerMeter: Diameter={diameter}, Density={density}, Result={result}");
+            return result;
+        }
+
+        private double CalculateRemainingSpace(double averageDepth, double stemming, double emulsionCoveringSpace)
+        {
+            double result = averageDepth - (stemming + emulsionCoveringSpace);
+            MessageBox.Show($"CalculateRemainingSpace: AverageDepth={averageDepth}, Stemming={stemming}, EmulsionCoveringSpace={emulsionCoveringSpace}, Result={result}");
+            return result;
+        }
+
+        private double CalculateTotalAnfo(double anfoCoveringSpace, int numberOfHoles)
+        {
+            return anfoCoveringSpace * numberOfHoles;
+        }
+
+        private int CalculateTotalCount()
+        {
+            return DepthEntries.Sum(entry => entry.Depths.Count(depth => depth != 0));
+        }
+
+        private double CalculateTotalDepth()
+        {
+            return DepthEntries.Sum(entry => entry.Depths.Where(depth => depth != 0).Sum());
+        }
+
+        private double CalculateTotalEmulsion(double emulsionPerHole, int numberOfHoles)
+        {
+            return emulsionPerHole * numberOfHoles;
+        }
+
+        private double CalculateTotalVolume(double averageDepth, double spacing, double burden)
+        {
+            double result = averageDepth * _totalHoles * spacing * burden;
+            MessageBox.Show($"average depth {averageDepth} , total holes {_totalHoles} ,spacing {spacing} , burden {burden}");
+            return result;
         }
 
         private void CreateDepthGrid(int numberOfRows, int numberOfColumns)
@@ -76,74 +175,84 @@ namespace WpfApp6.Views.Blast_Engineer
             }
         }
 
-        private double CalculateTotalDepth()
+        private double CalculateTotalEmulsion65mm(double emulsion65mmPerHole, int numberOfHoles)
         {
-            return DepthEntries.Sum(entry => entry.Depths.Where(depth => depth != 0).Sum());
+            return ((emulsion65mmPerHole * numberOfHoles) * 1.5 / 16) * 25;
         }
 
-        private int CalculateTotalCount()
+        private double CalculateTotalEmulsion50mm(double emulsion50mmPerHole, int numberOfHoles)
         {
-            return DepthEntries.Sum(entry => entry.Depths.Count(depth => depth != 0));
-        }
-
-        private double CalculateAverageDepth()
-        {
-            double totalDepth = CalculateTotalDepth();
-            int totalCount = CalculateTotalCount();
-            return totalCount > 0 ? totalDepth / totalCount : 0;
-        }
-
-        private void UpdateAverageDepth()
-        {
-            double averageDepth = CalculateAverageDepth();
-            AverageDepthTextBlock.Text = $"Average Depth: {averageDepth:F2}";
-        }
-
-        private double CalculateTotalVolume(double averageDepth, double spacing, double burden)
-        {
-            return averageDepth * _totalHoles * spacing * burden;
+            return emulsion50mmPerHole * numberOfHoles;
         }
 
         private void Submit_Click(object sender, RoutedEventArgs e)
         {
             double averageDepth = CalculateAverageDepth();
 
-            if (double.TryParse(SpacingTextBox.Text, out double spacing) &&
+            if (double.TryParse(DiameterTextBox.Text, out double diameter) &&
+                double.TryParse(StemmingTextBox.Text, out double stemming) &&
+                double.TryParse(EmulsionPerHoleTextBox.Text, out double emulsionPerHole) &&
+                double.TryParse(Emulsion65mmPerHoleTextBox.Text, out double emulsion65mmPerHole) &&
+                double.TryParse(Emulsion50mmPerHoleTextBox.Text, out double emulsion50mmPerHole) &&
+                double.TryParse(EmulsionDensityTextBox.Text, out double emulsionDensity) &&
+                double.TryParse(AnfoDensityTextBox.Text, out double anfoDensity) &&
+                double.TryParse(SpacingTextBox.Text, out double spacing) &&
                 double.TryParse(BurdenTextBox.Text, out double burden))
             {
+                // Calculate Emulsion per meter
+                double emulsionPerMeter = CalculateEmulsionPerMeter(diameter, emulsionDensity);
+                Debug.WriteLine($"Emulsion per Meter: {emulsionPerMeter}");
+
+                // Calculate Emulsion Covering Space
+                double emulsionCoveringSpace = CalculateEmulsionCoveringSpace(emulsionPerHole, emulsionPerMeter);
+                Debug.WriteLine($"Emulsion Covering Space: {emulsionCoveringSpace}");
+
+                // Calculate Remaining Space
+                double remainingSpace = CalculateRemainingSpace(averageDepth, stemming, emulsionCoveringSpace);
+                Debug.WriteLine($"Remaining Space: {remainingSpace}");
+
+                // Calculate ANFO per meter
+                double anfoPerMeter = CalculateAnfoPerMeter(diameter, anfoDensity);
+                Debug.WriteLine($"ANFO per Meter: {anfoPerMeter}");
+
+                // Calculate ANFO Covering Space
+                double anfoCoveringSpace = CalculateAnfoCoveringSpace(anfoPerMeter, remainingSpace);
+                Debug.WriteLine($"ANFO Covering Space: {anfoCoveringSpace}");
+
+                // Calculate Total ANFO
+                double totalAnfo = CalculateTotalAnfo(anfoCoveringSpace, _totalHoles);
+                Debug.WriteLine($"Total ANFO: {totalAnfo}");
+
+                // Calculate Total Emulsion for 65 mm
+                double totalEmulsion65mm = CalculateTotalEmulsion65mm(emulsion65mmPerHole, _totalHoles);
+                Debug.WriteLine($"Total Emulsion 65 mm: {totalEmulsion65mm}");
+
+                // Calculate Total Emulsion for 50 mm
+                double totalEmulsion50mm = CalculateTotalEmulsion50mm(emulsion50mmPerHole, _totalHoles);
+                Debug.WriteLine($"Total Emulsion 50 mm: {totalEmulsion50mm}");
+
+                // Sum Total Emulsion
+                double totalEmulsion = totalEmulsion65mm + totalEmulsion50mm;
+                Debug.WriteLine($"Total Emulsion: {totalEmulsion}");
+
+                // Display the results
+                TotalEmulsionTextBlock.Text = $"Total Emulsion: {totalEmulsion:F2}";
+                TotalAnfoTextBlock.Text = $"Total ANFO: {totalAnfo:F2}";
+                TotalEmulsion65mmTextBlock.Text = $"Total Emulsion 65 mm: {totalEmulsion65mm:F2}";
+                TotalEmulsion50mmTextBlock.Text = $"Total Emulsion 50 mm: {totalEmulsion50mm:F2}";
                 double totalVolume = CalculateTotalVolume(averageDepth, spacing, burden);
                 TotalVolumeTextBlock.Text = $"Total Volume: {totalVolume:F2}";
             }
             else
             {
-                MessageBox.Show("Please enter valid numbers for spacing and burden.", "Invalid Input", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Please enter valid numbers for all fields.", "Invalid Input", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
-    }
 
-    public class DepthEntry : System.ComponentModel.INotifyPropertyChanged
-    {
-        public ObservableCollection<double> Depths
+        private void UpdateAverageDepth()
         {
-            get; private set;
-        }
-
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-
-        public DepthEntry(int numberOfColumns)
-        {
-            Depths = new ObservableCollection<double>(new double[numberOfColumns]);
-            Depths.CollectionChanged += Depths_CollectionChanged;
-        }
-
-        private void Depths_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-        {
-            OnPropertyChanged(nameof(Depths));
-        }
-
-        protected virtual void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            double averageDepth = CalculateAverageDepth();
+            AverageDepthTextBlock.Text = $"Average Depth: {averageDepth:F2}";
         }
     }
 }

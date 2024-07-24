@@ -8,14 +8,14 @@
         Title="StoreKeeperWindow" Height="450" Width="800"
                   WindowStartupLocation="CenterScreen">
 
-    <Grid   fw:PointerTracker.Enabled="True" Background="#01FFFFFF">
+    <Grid   fw:PointerTracker.Enabled="True" Background="White">
         <DockPanel>
 
             <!-- Navigation Menu -->
             <StackPanel DockPanel.Dock="Left" Width="180" Background="{DynamicResource SystemControlBackgroundBaseLowBrush}">
 
-                <MenuItem Header="Dashboard" Style="{StaticResource AcrylicMenuItemStyle}" Click="Dashboard_Btn_Click"   Margin="5" />
-                <MenuItem Header="Request" Style="{StaticResource AcrylicMenuItemStyle}" Click="Request_Btn_Click"  Margin="5" />
+                <MenuItem Header="Dashboard" Style="{StaticResource AcrylicMenuItemStyle}" Click="Dashboard_Btn_Click" Foreground="Black"  Margin="5" />
+                <MenuItem Header="Request" Style="{StaticResource AcrylicMenuItemStyle}" Click="Request_Btn_Click"  Margin="5" Foreground="black" />
             </StackPanel>
 
             <!-- Main Content Area -->
