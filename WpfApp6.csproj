@@ -10,7 +10,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
     <PackageReference Include="FluentWPF" Version="0.10.2" />
+    <PackageReference Include="PasswordBoxMVVM" Version="1.0.5" />
   </ItemGroup>
 
 </Project>

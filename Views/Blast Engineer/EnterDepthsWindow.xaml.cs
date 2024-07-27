@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using WpfApp6.Models;
 
 namespace WpfApp6.Views.Blast_Engineer
 {
@@ -70,55 +71,55 @@ namespace WpfApp6.Views.Blast_Engineer
             return result;
         }
 
-        private double CalculateAverageDepth()
+        public double CalculateAverageDepth()
         {
             double totalDepth = CalculateTotalDepth();
             int totalCount = CalculateTotalCount();
             return totalCount > 0 ? totalDepth / totalCount : 0.0;
         }
 
-        private double CalculateEmulsionCoveringSpace(double emulsionPerHole, double emulsionPerMeter)
+        public double CalculateEmulsionCoveringSpace(double emulsionPerHole, double emulsionPerMeter)
         {
             double result = emulsionPerHole / emulsionPerMeter;
             MessageBox.Show($"CalculateEmulsionCoveringSpace: EmulsionPerHole={emulsionPerHole}, EmulsionPerMeter={emulsionPerMeter}, Result={result}");
             return result;
         }
 
-        private double CalculateEmulsionPerMeter(double diameter, double density)
+        public double CalculateEmulsionPerMeter(double diameter, double density)
         {
             double result = (22.0 / 7000.0) * Math.Pow(diameter / 2.0, 2) * density;
             MessageBox.Show($"CalculateEmulsionPerMeter: Diameter={diameter}, Density={density}, Result={result}");
             return result;
         }
 
-        private double CalculateRemainingSpace(double averageDepth, double stemming, double emulsionCoveringSpace)
+        public double CalculateRemainingSpace(double averageDepth, double stemming, double emulsionCoveringSpace)
         {
             double result = averageDepth - (stemming + emulsionCoveringSpace);
             MessageBox.Show($"CalculateRemainingSpace: AverageDepth={averageDepth}, Stemming={stemming}, EmulsionCoveringSpace={emulsionCoveringSpace}, Result={result}");
             return result;
         }
 
-        private double CalculateTotalAnfo(double anfoCoveringSpace, int numberOfHoles)
+        public double CalculateTotalAnfo(double anfoCoveringSpace, int numberOfHoles)
         {
             return anfoCoveringSpace * numberOfHoles;
         }
 
-        private int CalculateTotalCount()
+        public int CalculateTotalCount()
         {
             return DepthEntries.Sum(entry => entry.Depths.Count(depth => depth != 0));
         }
 
-        private double CalculateTotalDepth()
+        public double CalculateTotalDepth()
         {
             return DepthEntries.Sum(entry => entry.Depths.Where(depth => depth != 0).Sum());
         }
 
-        private double CalculateTotalEmulsion(double emulsionPerHole, int numberOfHoles)
+        public double CalculateTotalEmulsion(double emulsionPerHole, int numberOfHoles)
         {
             return emulsionPerHole * numberOfHoles;
         }
 
-        private double CalculateTotalVolume(double averageDepth, double spacing, double burden)
+        public double CalculateTotalVolume(double averageDepth, double spacing, double burden)
         {
             double result = averageDepth * _totalHoles * spacing * burden;
             MessageBox.Show($"average depth {averageDepth} , total holes {_totalHoles} ,spacing {spacing} , burden {burden}");
@@ -175,12 +176,12 @@ namespace WpfApp6.Views.Blast_Engineer
             }
         }
 
-        private double CalculateTotalEmulsion65mm(double emulsion65mmPerHole, int numberOfHoles)
+        public double CalculateTotalEmulsion65mm(double emulsion65mmPerHole, int numberOfHoles)
         {
             return ((emulsion65mmPerHole * numberOfHoles) * 1.5 / 16) * 25;
         }
 
-        private double CalculateTotalEmulsion50mm(double emulsion50mmPerHole, int numberOfHoles)
+        public double CalculateTotalEmulsion50mm(double emulsion50mmPerHole, int numberOfHoles)
         {
             return emulsion50mmPerHole * numberOfHoles;
         }
@@ -242,6 +243,36 @@ namespace WpfApp6.Views.Blast_Engineer
                 TotalEmulsion50mmTextBlock.Text = $"Total Emulsion 50 mm: {totalEmulsion50mm:F2}";
                 double totalVolume = CalculateTotalVolume(averageDepth, spacing, burden);
                 TotalVolumeTextBlock.Text = $"Total Volume: {totalVolume:F2}";
+
+                UpdateAverageDepth();
+
+                var report = new ReportB
+                {
+                    Date = DateTime.Now,
+                    TotalEmulsion = totalEmulsion,
+                    TotalEmulsion65mm = totalEmulsion65mm,
+                    TotalEmulsion50mm = totalEmulsion50mm,
+                    TotalAnfo = totalAnfo,
+                    TotalVolume = totalVolume,
+                    AverageDepth = averageDepth,
+                    Diameter = diameter,
+                    Stemming = stemming,
+                    EmulsionPerHole = emulsionPerHole,
+                    EmulsionDensity = emulsionDensity,
+                    AnfoDensity = anfoDensity,
+                    Spacing = spacing,
+                    Burden = burden
+                };
+
+                SharedData.Instance.Reports.Add(report);
+
+                // Show the ReportWindow with the report data
+                var reportWindow = new ReportWindow();
+                reportWindow.Show();
+                // Refresh the ListView to show updated reports
+
+                // Close the current window
+                this.Close();
             }
             else
             {
@@ -253,6 +284,11 @@ namespace WpfApp6.Views.Blast_Engineer
         {
             double averageDepth = CalculateAverageDepth();
             AverageDepthTextBlock.Text = $"Average Depth: {averageDepth:F2}";
+            double totalDepth = CalculateTotalDepth();
+            TotalDrillMeterTextBlock.Text = $"Total Depth: {totalDepth:F2}";
+
+            int totalFilledHoles = CalculateTotalCount();
+            TotalFilledHolesTextBlock.Text = $"Total Filled Holes: {totalFilledHoles}";
         }
     }
 }

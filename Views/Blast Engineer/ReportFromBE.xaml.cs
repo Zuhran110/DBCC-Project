@@ -144,9 +144,7 @@ public partial class ReportFromBE : Page
 
             if (depthsResult == true)
             {
-                var depths = enterDepthsWindow.DepthEntries.SelectMany(de => de.Depths).ToArray();
-                // Handle the depths data here
-                MessageBox.Show($"Entered Depths: {string.Join(", ", depths)}", "Depths Submitted", MessageBoxButton.OK, MessageBoxImage.Information);
+                // Handle successful depth entry
             }
         }
         else
