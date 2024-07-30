@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Navigation;
+using WpfApp6.Services;
 using WpfApp6.Views.Blast_Engineer.ContentDialogue;
 using WpfApp6.Views.General_Manager;
 
@@ -40,6 +40,12 @@ public partial class ReportFromBE : Page
 
         Reports = new ObservableCollection<Report>(_allReports);
         ReportsDataGrid.ItemsSource = Reports;
+        var currentUser = UserService.Instance.CurrentUser;
+        if (currentUser != null)
+        {
+            // Use currentUser info as needed
+            UserNameTextBlock.Text = $"Logged in as: {currentUser.UserName}";
+        }
     }
 
     private void OnPropertyChanged([CallerMemberName] string name = null)
@@ -120,8 +126,6 @@ public partial class ReportFromBE : Page
     {
         if (ReportsDataGrid.SelectedItem is Report selectedReport)
         {
-            var detailPagefromSK = new DetailReportFromBE(selectedReport);
-            NavigationService.Navigate(detailPagefromSK);
         }
     }
 

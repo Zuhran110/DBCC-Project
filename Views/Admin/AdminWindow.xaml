@@ -6,15 +6,16 @@
         xmlns:fw="clr-namespace:SourceChord.FluentWPF;assembly=FluentWPF"
         xmlns:local="clr-namespace:WpfApp6.Views.Admin"
         mc:Ignorable="d"
-        Title="AdminWindow" Height="450" Width="800">
+        Title="AdminWindow" Height="450" Width="800"
+                  WindowStartupLocation="CenterScreen">
     <Grid fw:PointerTracker.Enabled="True" Background="DarkGray">
         <DockPanel>
             <!-- Navigation Menu -->
             <StackPanel DockPanel.Dock="Left" Width="180" Background="{DynamicResource SystemControlBackgroundBaseLowBrush}">
-
                 <MenuItem Header="Employees" Click="Empoyees_Btn_Click" Style="{StaticResource AcrylicMenuItemStyle}" Margin="5" />
                 <MenuItem Header="Stores" Click="Store_Btn_Click" Style="{StaticResource AcrylicMenuItemStyle}" Margin="5" />
                 <MenuItem Header="Projects" Click="Project_Btn_Click" Style="{StaticResource AcrylicMenuItemStyle}" Margin="5" />
+                <MenuItem Header="Logout" Click="Logout_Btn_Click" Style="{StaticResource AcrylicMenuItemStyle}" Margin="5" />
             </StackPanel>
             <!-- Main Content Area -->
             <Frame x:Name="MainFrameAdmin" NavigationUIVisibility="Hidden" />

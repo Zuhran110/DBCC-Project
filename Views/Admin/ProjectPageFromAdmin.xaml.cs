@@ -1,81 +1,113 @@
 ﻿using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using Microsoft.EntityFrameworkCore;
+using WpfApp6.Models;
 
-namespace WpfApp6.Views.Admin;
-
-/// <summary>
-/// Interaction logic for ProjectPageFromAdmin.xaml
-/// </summary>
-public partial class ProjectPageFromAdmin : Page
+namespace WpfApp6.Views.Admin
 {
-    public ObservableCollection<Project> Projects
+    public partial class ProjectPageFromAdmin : Page
     {
-        get; set;
-    }
+        public ObservableCollection<Project> Projects { get; set; }
+        public ObservableCollection<Login> Engineers { get; set; }
+        private Project selectedProject;
 
-    public ProjectPageFromAdmin()
-    {
-        InitializeComponent();
-        Projects = new ObservableCollection<Project>
+        public ProjectPageFromAdmin()
+        {
+            InitializeComponent();
+            LoadData();
+        }
+
+        private void LoadData()
+        {
+            using (var context = new AppDbContext())
             {
-                new Project { ID = 1, ProjectName = "Project Alpha", BlastingEngineer = "John Doe" },
-                new Project { ID = 2, ProjectName = "Project Beta", BlastingEngineer = "Jane Smith" }
-            };
-        ProjectsDataGrid.ItemsSource = Projects;
-    }
+                Projects = new ObservableCollection<Project>(context.Projects
+                    .Include(p => p.ProjectEngineers)
+                    .ThenInclude(pe => pe.Engineer)
+                    .ToList());
 
-    private void AddProjectButton_Click(object sender, RoutedEventArgs e)
-    {
-        var newProject = new Project
-        {
-            ID = Projects.Count + 1,
-            ProjectName = ProjectNameTextBox.Text,
-            BlastingEngineer = BlastingEngineerTextBox.Text
-        };
+                Engineers = new ObservableCollection<Login>(context.Login
+                    .Where(l => l.Role == Login.Roles.BlastEngineer)
+                    .ToList());
+            }
 
-        Projects.Add(newProject);
-
-        // Clear the input fields
-        ProjectNameTextBox.Clear();
-        BlastingEngineerTextBox.Clear();
-    }
-
-    private void ProjectsDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
-    {
-        if (ProjectsDataGrid.SelectedItem is Project selectedProject)
-        {
-            DetailProjectNameTextBox.Text = selectedProject.ProjectName;
-            DetailBlastingEngineerTextBox.Text = selectedProject.BlastingEngineer;
-        }
-    }
-
-    private void UpdateProjectButton_Click(object sender, RoutedEventArgs e)
-    {
-        if (ProjectsDataGrid.SelectedItem is Project selectedProject)
-        {
-            selectedProject.BlastingEngineer = DetailBlastingEngineerTextBox.Text;
-
-            // Refresh the DataGrid to show updated values
-            ProjectsDataGrid.Items.Refresh();
-        }
-    }
-
-    public class Project
-    {
-        public int ID
-        {
-            get; set;
+            ProjectsDataGrid.ItemsSource = Projects;
+            BlastingEngineerComboBox.ItemsSource = Engineers;
         }
 
-        public string ProjectName
+        private void AddProjectButton_Click(object sender, RoutedEventArgs e)
         {
-            get; set;
+            if (BlastingEngineerComboBox.SelectedItem is Login selectedEngineer)
+            {
+                var newProject = new Project
+                {
+                    ProjectName = ProjectNameTextBox.Text,
+                    ProjectEngineers = new List<ProjectEngineer>
+                    {
+                        new ProjectEngineer { EngineerId = selectedEngineer.Id }
+                    }
+                };
+
+                using (var context = new AppDbContext())
+                {
+                    context.Projects.Add(newProject);
+                    context.SaveChanges();
+                }
+
+                Projects.Add(newProject);
+
+                // Clear the input fields
+                ProjectNameTextBox.Clear();
+                BlastingEngineerComboBox.SelectedIndex = -1;
+            }
         }
 
-        public string BlastingEngineer
+        private void ProjectsDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            get; set;
+            if (ProjectsDataGrid.SelectedItem is Project project)
+            {
+                selectedProject = project;
+                ProjectNameTextBox.Text = project.ProjectName;
+                BlastingEngineerComboBox.SelectedItem = project.ProjectEngineers.FirstOrDefault()?.Engineer;
+            }
+            else
+            {
+                selectedProject = null;
+                ProjectNameTextBox.Clear();
+                BlastingEngineerComboBox.SelectedIndex = -1;
+            }
+        }
+
+        private void UpdateProjectButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (selectedProject != null && BlastingEngineerComboBox.SelectedItem is Login selectedEngineer)
+            {
+                using (var context = new AppDbContext())
+                {
+                    var project = context.Projects.Include(p => p.ProjectEngineers).FirstOrDefault(p => p.Id == selectedProject.Id);
+                    if (project != null)
+                    {
+                        project.ProjectName = ProjectNameTextBox.Text;
+                        project.ProjectEngineers.Clear();
+                        project.ProjectEngineers.Add(new ProjectEngineer { EngineerId = selectedEngineer.Id });
+
+                        context.SaveChanges();
+                    }
+                }
+
+                selectedProject.ProjectName = ProjectNameTextBox.Text;
+                selectedProject.ProjectEngineers.Clear();
+                selectedProject.ProjectEngineers.Add(new ProjectEngineer { EngineerId = selectedEngineer.Id, Engineer = selectedEngineer });
+
+                // Refresh the DataGrid to show updated values
+                ProjectsDataGrid.Items.Refresh();
+
+                // Clear the input fields
+                ProjectNameTextBox.Clear();
+                BlastingEngineerComboBox.SelectedIndex = -1;
+            }
         }
     }
 }

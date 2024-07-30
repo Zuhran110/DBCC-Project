@@ -1,45 +1,69 @@
 ﻿<Window x:Class="WpfApp6.Views.Blast_Engineer.ReportDetails"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:WpfApp6.Views.Blast_Engineer"
         mc:Ignorable="d"
         Title="ReportDetails" Height="450" Width="800">
+
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
         <!-- Header Section -->
         <TextBlock Text="Report Details"
                    FontSize="24"
                    FontWeight="Bold"
                    HorizontalAlignment="Center"
-                   Margin="10" />
+                   Margin="10"
+                   Grid.Row="0" />
 
-        <TextBlock Text="{Binding CurrentUserInfo}"
-                   FontSize="14"
-                   FontWeight="Normal"
-                   HorizontalAlignment="Right"
-                   Margin="10" />
+        <!-- Project and Store Information Section -->
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="10" Grid.Row="1">
+            <TextBlock x:Name="ProjectNameTextBlock"
+                       FontSize="14"
+                       FontWeight="Normal"
+                       Margin="0,0,10,0" />
+            <TextBlock x:Name="StoreNameTextBlock"
+                       FontSize="14"
+                       FontWeight="Normal" />
+        </StackPanel>
+
+        <!-- User Information Section -->
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="10" Grid.Row="1">
+            <TextBlock x:Name="CreatedByTextBlock"
+                       FontSize="14"
+                       FontWeight="Normal"
+                       Margin="0,0,10,0" />
+            <TextBlock x:Name="CreatedDateTextBlock"
+                       FontSize="14"
+                       FontWeight="Normal" />
+        </StackPanel>
 
         <!-- Main Content Section -->
-        <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="10,50,10,50">
+        <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="10,0,10,10" Grid.Row="2">
             <StackPanel>
                 <!-- Actual Calculations Section -->
                 <GroupBox Header="Actual Calculations" Margin="10">
                     <StackPanel>
-                        <!-- Bind TextBlocks to properties -->
-                        <TextBlock Text="{Binding TotalEmulsion, StringFormat='Total Emulsion: {0:F2}'}" Margin="5" />
-                        <TextBlock Text="{Binding TotalAnfo, StringFormat='Total Anfo: {0:F2}'}" Margin="5" />
-                        <TextBlock Text="{Binding TotalVolume, StringFormat='Total Volume: {0:F2}'}" Margin="5" />
+                        <!-- TextBlocks to display totals -->
+                        <TextBlock x:Name="TotalEmulsionTextBlock" Margin="5" />
+                        <TextBlock x:Name="TotalAnfoTextBlock" Margin="5" />
+                        <TextBlock x:Name="TotalVolumeTextBlock" Margin="5" />
                     </StackPanel>
                 </GroupBox>
 
                 <!-- Combo Box Data Section -->
                 <GroupBox Header="Materials Used" Margin="10">
-                    <ListView ItemsSource="{Binding Materials}">
+                    <ListView x:Name="MaterialsListView">
                         <ListView.View>
                             <GridView>
-                                <GridViewColumn Header="Material" DisplayMemberBinding="{Binding Item1}" Width="200" />
-                                <GridViewColumn Header="Quantity" DisplayMemberBinding="{Binding Item2}" Width="100" />
+                                <GridViewColumn Header="Material" DisplayMemberBinding="{Binding Material}" Width="200" />
+                                <GridViewColumn Header="Quantity" DisplayMemberBinding="{Binding Quantity}" Width="100" />
                             </GridView>
                         </ListView.View>
                     </ListView>
@@ -48,7 +72,7 @@
         </ScrollViewer>
 
         <!-- Buttons Section -->
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="10">
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="10" Grid.Row="3">
             <Button Content="Submit" Width="100" Margin="10" Click="SubmitBtn_Click" />
             <Button Content="Cancel" Width="100" Margin="10" Click="CancelBtn_Click" />
         </StackPanel>

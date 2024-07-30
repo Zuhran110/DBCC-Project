@@ -17,7 +17,6 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
-            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <!-- Header -->
@@ -26,35 +25,33 @@
         <!-- DataGrid to display projects -->
         <fw:AcrylicPanel Grid.Row="1" Grid.Column="0" Margin="0,0,10,0" BorderBrush="{DynamicResource SystemControlForegroundBaseMediumLowBrush}" TintColor="WhiteSmoke" TintOpacity="0.5">
             <DataGrid x:Name="ProjectsDataGrid" AutoGenerateColumns="False" CanUserAddRows="False" Margin="10" SelectionChanged="ProjectsDataGrid_SelectionChanged">
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="ID" Binding="{Binding ID}" Width="Auto" />
-                    <DataGridTextColumn Header="Project Name" Binding="{Binding ProjectName}" Width="*" />
-                    <DataGridTextColumn Header="Blasting Engineer" Binding="{Binding BlastingEngineer}" Width="*" />
-                </DataGrid.Columns>
-            </DataGrid>
+    <DataGrid.Columns>
+        <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="Auto" />
+        <DataGridTextColumn Header="Project Name" Binding="{Binding ProjectName}" Width="*" />
+        <DataGridTemplateColumn Header="Blasting Engineer" Width="*">
+            <DataGridTemplateColumn.CellTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding ProjectEngineers[0].Engineer.UserName}" />
+                </DataTemplate>
+            </DataGridTemplateColumn.CellTemplate>
+        </DataGridTemplateColumn>
+    </DataGrid.Columns>
+</DataGrid>
+
         </fw:AcrylicPanel>
 
-        <!-- Form to add new projects -->
-        <fw:AcrylicPanel Grid.Row="1" Grid.Column="1" BorderBrush="{DynamicResource SystemControlForegroundBaseMediumLowBrush}" TintColor="WhiteSmoke" TintOpacity="0.5" Grid.RowSpan="2" RenderTransformOrigin="0.494,0.587">
-            <StackPanel Margin="30,10,30,82">
-                <TextBlock Text="Add New Project" FontSize="18" Margin="0,0,0,10" />
+        <!-- Form to add/update projects -->
+        <fw:AcrylicPanel Grid.Row="1" Grid.Column="1" BorderBrush="{DynamicResource SystemControlForegroundBaseMediumLowBrush}" TintColor="WhiteSmoke" TintOpacity="0.5">
+            <StackPanel Margin="30,10,30,10">
+                <TextBlock Text="Project Details" FontSize="18" Margin="0,0,0,10" />
                 <TextBlock Text="Project Name:" Margin="0,5" />
                 <TextBox x:Name="ProjectNameTextBox" Width="200" />
                 <TextBlock Text="Blasting Engineer:" Margin="0,5" />
-                <TextBox x:Name="BlastingEngineerTextBox" Width="200" />
-                <Button Content="Add Project" Width="200" Margin="0,10" Click="AddProjectButton_Click" />
-            </StackPanel>
-        </fw:AcrylicPanel>
-
-        <!-- Details Panel -->
-        <fw:AcrylicPanel Grid.Row="2" Grid.ColumnSpan="1" BorderBrush="{DynamicResource SystemControlForegroundBaseMediumLowBrush}"  TintOpacity="0.5" Margin="0,20,10,0">
-            <StackPanel Orientation="Vertical" Margin="10">
-                <TextBlock Text="Project Details" FontSize="18" Margin="0,0,0,10" />
-                <TextBlock Text="Project Name:" Margin="0,5" />
-                <TextBox x:Name="DetailProjectNameTextBox" Width="200" />
-                <TextBlock Text="Blasting Engineer:" Margin="0,5" />
-                <TextBox x:Name="DetailBlastingEngineerTextBox" Width="200" />
-                <Button Content="Update Project" Width="200" Margin="0,10" Click="UpdateProjectButton_Click" />
+                <ComboBox x:Name="BlastingEngineerComboBox" Width="200" DisplayMemberPath="UserName" />
+                <StackPanel Orientation="Horizontal" Margin="0,10">
+                    <Button Content="Add Project" Width="90" Margin="0,0,10,0" Click="AddProjectButton_Click" />
+                    <Button Content="Update Project" Width="90" Click="UpdateProjectButton_Click" />
+                </StackPanel>
             </StackPanel>
         </fw:AcrylicPanel>
     </Grid>

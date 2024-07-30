@@ -8,6 +8,7 @@
         mc:Ignorable="d"
         Title="AddRequestWindow" Height="300" Width="300">
     <Grid fw:PointerTracker.Enabled="True" Background="#01FFFFFF">
+        <TextBlock x:Name="UserNameTextBlock" />
         <StackPanel Margin="10">
             <TextBlock Text="Enter Number of Holes:" Margin="0, 10, 0, 10" VerticalAlignment="Center" HorizontalAlignment="Center" />
             <TextBox x:Name="NumberOfHolesTextBox" Width="150" VerticalAlignment="Center" HorizontalAlignment="Center" />

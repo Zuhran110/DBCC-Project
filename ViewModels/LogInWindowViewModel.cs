@@ -1,8 +1,6 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using System.Windows;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System.Collections.Generic;
-using System.Linq;
-using System.Windows;
 using WpfApp6.Models;
 using WpfApp6.Services;
 using WpfApp6.Views.Admin;
@@ -30,19 +28,22 @@ namespace WpfApp6.ViewModels
 
         public LogInWindowViewModel()
         {
-            Logins = new List<Login>
-            {
-                new Login { Id = 1, UserName = "admin", Password = "admin123", Role = "admin" },
-                new Login { Id = 2, UserName = "GeneralManager", Password = "GM123", Role = "GeneralManager" },
-                new Login { Id = 3, UserName = "BlastEngineer", Password = "BE123", Role = "BlastEngineer" },
-                new Login { Id = 4, UserName = "StoreKeeper", Password = "SK123", Role = "StoreKeeper" }
-            };
         }
 
         [RelayCommand]
         public void LogIn()
         {
-            var user = Logins.FirstOrDefault(l => l.UserName == Username && l.Password == Password);
+            if (string.IsNullOrEmpty(Username) || string.IsNullOrEmpty(Password))
+            {
+                MessageBox.Show("Username and password cannot be empty", "Login Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            Login user;
+            using (var context = new AppDbContext())
+            {
+                user = context.Login.FirstOrDefault(l => l.UserName == Username && l.Password == Password);  // Change Logins to Login
+            }
 
             if (user != null)
             {
@@ -50,10 +51,10 @@ namespace WpfApp6.ViewModels
 
                 Window nextWindow = user.Role switch
                 {
-                    "admin" => new AdminWindow(),
-                    "GeneralManager" => new GeneralManagerWindow(),
-                    "BlastEngineer" => new BlastEngineerWindow(),
-                    "StoreKeeper" => new StoreKeeperWindow(),
+                    Login.Roles.Admin => new AdminWindow(),
+                    Login.Roles.GeneralManager => new GeneralManagerWindow(),
+                    Login.Roles.BlastEngineer => new BlastEngineerWindow(),
+                    Login.Roles.StoreKeeper => new StoreKeeperWindow(),
                     _ => null
                 };
 
@@ -68,5 +69,6 @@ namespace WpfApp6.ViewModels
                 MessageBox.Show("Invalid username or password", "Login Failed", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+
     }
 }

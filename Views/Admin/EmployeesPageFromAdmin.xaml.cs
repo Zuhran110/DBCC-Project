@@ -1,68 +1,58 @@
 ﻿using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
+using WpfApp6.Models;
 
-namespace WpfApp6.Views.Admin;
-
-/// <summary>
-/// Interaction logic for EmployeesPageFromAdmin.xaml
-/// </summary>
-public partial class EmployeesPageFromAdmin : Page
+namespace WpfApp6.Views.Admin
 {
-    public ObservableCollection<Employee> Employees
+    public partial class EmployeesPageFromAdmin : Page
     {
-        get; set;
-    }
-
-    public EmployeesPageFromAdmin()
-    {
-        InitializeComponent();
-        Employees = new ObservableCollection<Employee>
-            {
-                new Employee { ID = 1, Name = "John Doe", Position = "Manager", Department = "Sales" },
-                new Employee { ID = 2, Name = "Jane Smith", Position = "Developer", Department = "IT" }
-            };
-        EmployeesDataGrid.ItemsSource = Employees;
-    }
-
-    private void AddEmployeeButton_Click(object sender, RoutedEventArgs e)
-    {
-        var newEmployee = new Employee
+        public ObservableCollection<Login> Employees
         {
-            ID = Employees.Count + 1,
-            Name = NameTextBox.Text,
-            Position = PositionTextBox.Text,
-            Department = DepartmentTextBox.Text
-        };
+            get; set;
+        }
 
-        Employees.Add(newEmployee);
+        public EmployeesPageFromAdmin()
+        {
+            InitializeComponent();
+            LoadEmployees();
+        }
 
-        // Clear the input fields
-        NameTextBox.Clear();
-        PositionTextBox.Clear();
-        DepartmentTextBox.Clear();
-    }
-}
+        private void LoadEmployees()
+        {
+            using (var context = new AppDbContext())
+            {
+                var employees = context.Login.ToList();
+                Employees = new ObservableCollection<Login>(employees);
+            }
+            EmployeesDataGrid.ItemsSource = Employees;
+        }
 
-public class Employee
-{
-    public int ID
-    {
-        get; set;
-    }
+        private void AddEmployeeButton_Click(object sender, RoutedEventArgs e)
+        {
+            var selectedRole = ((ComboBoxItem)RoleComboBox.SelectedItem)?.Content.ToString();
 
-    public string Name
-    {
-        get; set;
-    }
+            var newEmployee = new Login
+            {
+                UserName = NameTextBox.Text,
+                Department = DepartmentTextBox.Text,
+                Password = PasswordBox.Password,
+                Role = selectedRole
+            };
 
-    public string Position
-    {
-        get; set;
-    }
+            using (var context = new AppDbContext())
+            {
+                context.Login.Add(newEmployee);
+                context.SaveChanges();
+            }
 
-    public string Department
-    {
-        get; set;
+            Employees.Add(newEmployee);
+
+            // Clear the input fields
+            NameTextBox.Clear();
+            DepartmentTextBox.Clear();
+            PasswordBox.Clear();
+            RoleComboBox.SelectedIndex = -1;
+        }
     }
 }

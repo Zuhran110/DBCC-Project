@@ -23,10 +23,10 @@
         <fw:AcrylicPanel Grid.Row="1" Background="{DynamicResource SystemControlBackgroundAltMediumLowBrush}" TintColor="WhiteSmoke" TintOpacity="0.5" BorderBrush="{DynamicResource SystemControlForegroundBaseMediumLowBrush}" BorderThickness="1">
             <DataGrid x:Name="EmployeesDataGrid" AutoGenerateColumns="False" CanUserAddRows="False" Margin="10" Background="Transparent" GridLinesVisibility="None">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="ID" Binding="{Binding ID}" Width="Auto" />
-                    <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="*" />
-                    <DataGridTextColumn Header="Position" Binding="{Binding Position}" Width="*" />
+                    <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="Auto" />
+                    <DataGridTextColumn Header="Name" Binding="{Binding UserName}" Width="*" />
                     <DataGridTextColumn Header="Department" Binding="{Binding Department}" Width="*" />
+                    <DataGridTextColumn Header="Role" Binding="{Binding Role}" Width="*" />
                 </DataGrid.Columns>
             </DataGrid>
         </fw:AcrylicPanel>
@@ -40,12 +40,22 @@
                     <TextBox x:Name="NameTextBox" Width="200" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
-                    <TextBlock Text="Position:" Width="100" VerticalAlignment="Center" />
-                    <TextBox x:Name="PositionTextBox" Width="200" />
-                </StackPanel>
-                <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
                     <TextBlock Text="Department:" Width="100" VerticalAlignment="Center" />
                     <TextBox x:Name="DepartmentTextBox" Width="200" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                    <TextBlock Text="Role:" Width="100" VerticalAlignment="Center" />
+                    <ComboBox x:Name="RoleComboBox" Width="200">
+                        <ComboBoxItem Content="Admin" />
+                        <ComboBoxItem Content="GeneralManager" />
+                        <ComboBoxItem Content="BlastEngineer" />
+                        <ComboBoxItem Content="StoreKeeper" />
+                        <!-- Add other roles as needed -->
+                    </ComboBox>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                    <TextBlock Text="Password:" Width="100" VerticalAlignment="Center" />
+                    <PasswordBox x:Name="PasswordBox" Width="200" />
                 </StackPanel>
                 <Button Content="Add Employee" Width="200" HorizontalAlignment="Left" Click="AddEmployeeButton_Click" />
             </StackPanel>

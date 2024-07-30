@@ -3,6 +3,7 @@ using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 using WpfApp6.Models;
+using WpfApp6.Services;
 using WpfApp6.Views.Blast_Engineer.ContentDialogue;
 
 namespace WpfApp6.Views.Blast_Engineer
@@ -182,47 +183,73 @@ namespace WpfApp6.Views.Blast_Engineer
 
         private void SubmitBtn_Click(object sender, RoutedEventArgs e)
         {
-            var newReport = new ReportB
-            {
-                Date = DateTime.Now
-            };
+            var selectionWindow = new ProjectStoreSelectionWindow();
+            bool? result = selectionWindow.ShowDialog();
 
-            foreach (var child in MainStackPanel.Children)
+            if (result == true)
             {
-                if (child is StackPanel stackPanel)
+                // Retrieve the selected project and store
+                Project selectedProject = selectionWindow.SelectedProject;
+                Store selectedStore = selectionWindow.SelectedStore;
+
+                var currentUser = UserService.Instance.CurrentUser;
+
+                var newReport = new ReportB
                 {
-                    var comboBox = stackPanel.Children.OfType<ComboBox>().FirstOrDefault();
-                    var textBox = stackPanel.Children.OfType<TextBox>().FirstOrDefault();
+                    Date = DateTime.Now,
+                    CreatedBy = currentUser?.UserName, // Set the CreatedBy property
+                    Materials = new List<(string SelectedItem, double Quantity)>()
+                };
 
-                    if (comboBox != null && textBox != null && comboBox.SelectedItem != null)
+                foreach (var child in MainStackPanel.Children)
+                {
+                    if (child is StackPanel stackPanel)
                     {
-                        if (double.TryParse(textBox.Text, out double quantity))
+                        var comboBox = stackPanel.Children.OfType<ComboBox>().FirstOrDefault();
+                        var textBox = stackPanel.Children.OfType<TextBox>().FirstOrDefault();
+
+                        if (comboBox != null && textBox != null && comboBox.SelectedItem != null)
                         {
-                            newReport.Materials.Add((comboBox.SelectedItem.ToString(), quantity));
+                            if (double.TryParse(textBox.Text, out double quantity))
+                            {
+                                var comboBoxItem = comboBox.SelectedItem as ComboBoxItem;
+                                if (comboBoxItem != null)
+                                {
+                                    newReport.Materials.Add((comboBoxItem.Content.ToString(), quantity));
+                                }
+                            }
                         }
                     }
                 }
+
+                // Save the new report to the shared instance or any other desired storage
+                SharedData.Instance.Reports.Add(newReport);
+
+                // Add the selected project and store to the dictionary
+                SharedData.Instance.ReportAssociations[newReport] = (selectedProject, selectedStore);
+
+                // Calculate totals
+                double totalAnfo = SharedData.Instance.Reports.Sum(r => r.TotalAnfo);
+                double totalEmulsion = SharedData.Instance.Reports.Sum(r => r.TotalEmulsion);
+                double totalVolume = SharedData.Instance.Reports.Sum(r => r.TotalVolume);
+
+                // Set totals in the new report
+                newReport.TotalAnfo = totalAnfo;
+                newReport.TotalEmulsion = totalEmulsion;
+                newReport.TotalVolume = totalVolume;
+
+                // Refresh the list view
+                PopulateListView();
+
+                // Navigate to Report Details Window
+                var reportDetailsWindow = new ReportDetails(newReport, selectedProject.ProjectName, selectedStore.StoreName);
+                reportDetailsWindow.Show();
+                this.Close();
             }
-
-            // Save to shared instance or any other desired storage
-            SharedData.Instance.Reports.Add(newReport);
-
-            // Calculate totals
-            double totalAnfo = SharedData.Instance.Reports.Sum(r => r.TotalAnfo);
-            double totalEmulsion = SharedData.Instance.Reports.Sum(r => r.TotalEmulsion);
-            double totalVolume = SharedData.Instance.Reports.Sum(r => r.TotalVolume);
-
-            // Set totals in the new report
-            newReport.TotalAnfo = totalAnfo;
-            newReport.TotalEmulsion = totalEmulsion;
-            newReport.TotalVolume = totalVolume;
-
-            // Open the ReportDetailsWindow
-            var reportDetailsWindow = new ReportDetails
+            else
             {
-                DataContext = newReport
-            };
-            reportDetailsWindow.ShowDialog();
+                MessageBox.Show("Submission cancelled.", "Cancelled", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
         }
     }
 }

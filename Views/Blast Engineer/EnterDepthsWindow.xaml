@@ -61,12 +61,6 @@
         <TextBlock Text="Enter Burden:" Margin="10,0,0,0" Grid.Row="6" Grid.Column="0" VerticalAlignment="Center" />
         <TextBox x:Name="BurdenTextBox" Margin="10" Grid.Row="6" Grid.Column="1" Style="{StaticResource TextBoxRevealStyle}" />
 
-        <TextBlock x:Name="TotalVolumeTextBlock" FontWeight="Bold" FontSize="14" Margin="10" Grid.Row="7" Grid.Column="0" />
-        <TextBlock x:Name="TotalEmulsion65mmTextBlock" FontWeight="Bold" FontSize="14" Margin="10" Grid.Row="10" Grid.Column="1" />
-        <TextBlock x:Name="TotalEmulsion50mmTextBlock" FontWeight="Bold" FontSize="14" Margin="10" Grid.Row="10" Grid.Column="2" />
-        <TextBlock x:Name="TotalEmulsionTextBlock" FontWeight="Bold" FontSize="14" Margin="10" Grid.Row="7" Grid.Column="1" />
-        <TextBlock x:Name="TotalAnfoTextBlock" FontWeight="Bold" FontSize="14" Margin="10" Grid.Row="7" Grid.Column="2" />
-
         <DataGrid x:Name="DepthsDataGrid" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" Margin="10,0,10,10" Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="4" HorizontalAlignment="Center" VerticalAlignment="Center" />
 
         <Button Content="Submit" Foreground="Black" Background="White" Padding="10,5,10,5" Width="75" Margin="15" BorderBrush="Black" BorderThickness="1" Style="{StaticResource ButtonRevealStyle}" HorizontalAlignment="Left" VerticalAlignment="Bottom" Click="Submit_Click" Grid.Row="10" Grid.Column="0" Grid.ColumnSpan="4" />

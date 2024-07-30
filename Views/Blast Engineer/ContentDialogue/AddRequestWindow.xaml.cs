@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using WpfApp6.Services;
 
 namespace WpfApp6.Views.Blast_Engineer.ContentDialogue
 {
@@ -22,6 +23,12 @@ namespace WpfApp6.Views.Blast_Engineer.ContentDialogue
         public AddRequestWindow()
         {
             InitializeComponent();
+            var currentUser = UserService.Instance.CurrentUser;
+            if (currentUser != null)
+            {
+                // Use currentUser info as needed
+                UserNameTextBlock.Text = $"Logged in as: {currentUser.UserName}";
+            }
         }
 
         private void Submit_Click(object sender, RoutedEventArgs e)

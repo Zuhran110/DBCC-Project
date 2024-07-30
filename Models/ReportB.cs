@@ -21,6 +21,7 @@ public class ReportB : INotifyPropertyChanged
     private double _anfoDensity;
     private double _spacing;
     private double _burden;
+    private string _createdBy;
 
     public string SelectedItem
     {
@@ -41,6 +42,16 @@ public class ReportB : INotifyPropertyChanged
         {
             _date = value;
             OnPropertyChanged(nameof(Date));
+        }
+    }
+
+    public string CreatedBy
+    {
+        get => _createdBy;
+        set
+        {
+            _createdBy = value;
+            OnPropertyChanged(nameof(CreatedBy));
         }
     }
 
